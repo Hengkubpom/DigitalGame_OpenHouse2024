@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace DigitalGame_OpenHouse2024
 {
@@ -9,12 +10,15 @@ namespace DigitalGame_OpenHouse2024
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D whiteblock_test, darkmap;
+        private Texture2D whiteblock_test, darkmap, codeforblock;
         private SpriteFont pixelfont;
-        private MouseState mouse_state, old_mouse_state;
-        private KeyboardState key_state, old_key_state;
+        static public MouseState mouse_state, old_mouse_state;
+        static public KeyboardState key_state, old_key_state;
         private char character;
-        private string player_name = "", virtual_name = "";
+        private string player_name = "";
+        private Player player_character;
+        private List<CodeBlock> blocks = new List<CodeBlock>();
+        private List<Room> rooms = new List<Room>();
         enum ScreenState
         {
             MainMenu,
@@ -52,9 +56,17 @@ namespace DigitalGame_OpenHouse2024
 
         protected override void LoadContent()
         {
+            
             whiteblock_test = Content.Load<Texture2D>("whiteblock");
+            codeforblock = Content.Load<Texture2D>("whiteblock");
             darkmap = Content.Load<Texture2D>("ingre/dark");
             pixelfont = Content.Load<SpriteFont>("font/Pixelfont");
+            player_character = new Player(whiteblock_test, 1, 1, 1, pixelfont);
+            blocks.Add(new CodeBlock("Left", new Vector2(0, 450), codeforblock));
+            blocks.Add(new CodeBlock("Down", new Vector2(0,600), codeforblock));
+            rooms.Add(new Room(new Vector2(600, 600), darkmap));
+            rooms.Add(new Room(new Vector2(600, 750), darkmap));
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
@@ -139,6 +151,7 @@ namespace DigitalGame_OpenHouse2024
                 }
                 if(key_state.IsKeyDown(Keys.Enter) && old_key_state.IsKeyUp(Keys.Enter) || EnterButton.Contains(mouse_state.X,mouse_state.Y) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
                 {
+                    player_character.name = player_name;
                     OnScreen = ScreenState.Gameplay;
                 }
                 
@@ -171,14 +184,58 @@ namespace DigitalGame_OpenHouse2024
         ////////////// Gameplay ////////////////
         ////////////// Gameplay ////////////////
 
+        static public Rectangle walltest = new Rectangle(0, 0, 300, 300);
+        private Rectangle apartment = new Rectangle(600, 600, 300, 250);
         protected void Update_Gameplay(GameTime gameTime)
         {
+            player_character.Player_Update(gameTime);
 
+           
+            foreach(CodeBlock minicode in blocks)
+            {
+                minicode.Code_Update(gameTime);
+                if(minicode.hitbox.Contains(mouse_state.X, mouse_state.Y) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
+                {
+                    minicode.follow_ms = true;
+                }
+                if(mouse_state.LeftButton == ButtonState.Released)
+                {
+                    if (apartment.Contains(mouse_state.Position.ToVector2()) && minicode.follow_ms)
+                    {
+                        foreach(Room miniroom in rooms)
+                        {
+                            if (miniroom.IsEmpty)
+                            {
+                                miniroom.fill_code(minicode);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    minicode.follow_ms = false;
+                }
+
+                
+
+            }
         }
 
         protected void Draw_Gameplay(GameTime gameTime)
         {
+            player_character.Player_draw(_spriteBatch);
+            foreach(Room miniroom in rooms)
+            {
+                miniroom.Draw_room(_spriteBatch);
+            }
+            foreach(CodeBlock minicode in blocks)
+            {
+                minicode.Code_draw(_spriteBatch);
+            }
 
+            _spriteBatch.Draw(darkmap, apartment, Color.White);
+
+            //test wall
+            _spriteBatch.Draw(whiteblock_test, walltest, Color.Black);
         }
 
     }
