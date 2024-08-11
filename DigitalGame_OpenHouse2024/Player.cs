@@ -10,10 +10,10 @@ namespace DigitalGame_OpenHouse2024
         private int speed = 60;
         public string name = "";
         private string Direction = "";
-        private int numberDirection;
         private SpriteFont font;
         public bool allow_walking = false;
-        public Vector2 position = new Vector2(500,100);
+        private Vector2 origin = new Vector2(500,100);
+        public Vector2 position;
         public Rectangle hitbox;
         AnimatedTexture Player_Texture = new AnimatedTexture(Vector2.Zero, 0, 1, 0);
         public Player(Texture2D Texture,int frameCount, int frameRow, int framesPerSec, SpriteFont nameFont)
@@ -21,16 +21,21 @@ namespace DigitalGame_OpenHouse2024
             Player_Texture.Load(Texture, frameCount, frameRow, framesPerSec, 1);
             hitbox = new Rectangle((int)position.X, (int)position.Y, 16, 32);
             font = nameFont;
-            numberDirection = -1;
+            position = origin;
         }
 
+        public void Reset()
+        {
+            position = origin;
+            Direction = "";
+            allow_walking = false;
+        }
 
         public void Player_Update(GameTime gameTime)
         {
             Player_Texture.UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
             hitbox = new Rectangle((int)position.X, (int)position.Y, 16, 32);
 
-            Console.WriteLine(numberDirection);
 
 
             //test player

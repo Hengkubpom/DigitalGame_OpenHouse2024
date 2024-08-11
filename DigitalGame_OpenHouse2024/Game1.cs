@@ -14,6 +14,9 @@ namespace DigitalGame_OpenHouse2024
         private SpriteFont pixelfont;
         static public MouseState mouse_state, old_mouse_state;
         static public KeyboardState key_state, old_key_state;
+        private bool IsTutorial = false;
+        private float Time = 0;
+        private int minute, second;
         private char character;
         private string player_name = "";
         private Player player_character;
@@ -184,10 +187,26 @@ namespace DigitalGame_OpenHouse2024
         ////////////// Gameplay ////////////////
         ////////////// Gameplay ////////////////
 
-        static public Rectangle walltest = new Rectangle(0, 0, 300, 300);
+        static public Rectangle walltest = new Rectangle(450, 450, 300, 300);
         private Rectangle apartment = new Rectangle(600, 600, 300, 250);
+        private Rectangle Restart = new Rectangle(0, 0, 50, 50);
         protected void Update_Gameplay(GameTime gameTime)
         {
+            
+            if (!IsTutorial)
+            {
+                Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if(Time >= 60)
+                {
+                    minute = (int)(Time/60);
+                    second = (int)(Time - (minute * 60));
+                }
+                else
+                {
+                    second = (int)(Time);
+                }
+            }
+            Console.WriteLine(minute + " M, " + second + " S");
             player_character.Player_Update(gameTime);
 
            
@@ -215,6 +234,20 @@ namespace DigitalGame_OpenHouse2024
                     minicode.follow_ms = false;
                 }
 
+                //Restart button
+                if (Restart.Contains(mouse_state.Position.ToVector2()) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
+                {
+                    Time = 0;
+                    minute = 0;
+                    second = 0;
+                    player_character.Reset();
+                    Room.DirectionInThisRoom.Clear();
+                    foreach(Room miniroom in rooms)
+                    {
+                        miniroom.Restart();
+
+                    }
+                }
                 
 
             }
@@ -236,6 +269,9 @@ namespace DigitalGame_OpenHouse2024
 
             //test wall
             _spriteBatch.Draw(whiteblock_test, walltest, Color.Black);
+
+
+            _spriteBatch.Draw(whiteblock_test, Restart, Color.Red);
         }
 
     }
