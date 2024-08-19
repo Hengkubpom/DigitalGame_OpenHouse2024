@@ -10,7 +10,7 @@ namespace DigitalGame_OpenHouse2024
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D whiteblock_test, darkmap, codeforblock, charactert, Map2;
+        private Texture2D whiteblock_test, darkmap, codeforblock, charactert, Map2, bg_main, logo, start1,start2;
         private SpriteFont pixelfont;
         static public MouseState mouse_state, old_mouse_state;
         static public KeyboardState key_state, old_key_state;
@@ -65,6 +65,10 @@ namespace DigitalGame_OpenHouse2024
             darkmap = Content.Load<Texture2D>("ingre/dark");
             pixelfont = Content.Load<SpriteFont>("font/Pixelfont");
             charactert = Content.Load<Texture2D>("character_upscale");
+            bg_main = Content.Load<Texture2D>("menu/bg_main");
+            logo = Content.Load<Texture2D>("menu/logo");
+            start1 = Content.Load<Texture2D>("menu/startbutton");
+            start2 = Content.Load<Texture2D>("menu/startbutton_2");
             player_character = new Player(charactert, 6, 8, 5, pixelfont);
             blocks.Add(new CodeBlock("Left", new Vector2(0, 450), codeforblock));
             blocks.Add(new CodeBlock("Down", new Vector2(0,600), codeforblock));
@@ -124,7 +128,7 @@ namespace DigitalGame_OpenHouse2024
         ////////////////// MainMenu ////////////////////////
         ////////////////// MainMenu ////////////////////////
         ////////////////// MainMenu ////////////////////////
-        Rectangle StartButton = new Rectangle(700, 600, 300, 200);
+        Rectangle StartButton = new Rectangle(732, 475, 140, 148);
         Rectangle EnterButton = new Rectangle(800, 650, 150, 100);
         bool name_popup = false;
         protected void Update_Mainmenu(GameTime gameTIme)
@@ -164,7 +168,16 @@ namespace DigitalGame_OpenHouse2024
 
         protected void Draw_Mainmenu(GameTime gameTime)
         {
-            _spriteBatch.Draw(whiteblock_test, StartButton, Color.Lime);
+            _spriteBatch.Draw(bg_main, Vector2.Zero,Color.White);
+            _spriteBatch.Draw(logo, new Vector2(180,150), Color.White);
+            if (StartButton.Contains(mouse_state.X,mouse_state.Y))
+            {
+                _spriteBatch.Draw(start2, StartButton, Color.White);
+            }
+            else
+            {
+                _spriteBatch.Draw(start1, StartButton, Color.White);
+            }
             if(name_popup)
             {
                 _spriteBatch.Draw(darkmap, new Rectangle(0, 0, 1600, 900), Color.White);
