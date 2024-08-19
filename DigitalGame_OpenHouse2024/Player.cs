@@ -19,7 +19,7 @@ namespace DigitalGame_OpenHouse2024
         public Player(Texture2D Texture,int frameCount, int frameRow, int framesPerSec, SpriteFont nameFont)
         {
             Player_Texture.Load(Texture, frameCount, frameRow, framesPerSec, 1);
-            hitbox = new Rectangle((int)position.X, (int)position.Y, 16, 32);
+            hitbox = new Rectangle((int)position.X, (int)position.Y, 32, 64);
             font = nameFont;
             position = origin;
         }
@@ -34,27 +34,32 @@ namespace DigitalGame_OpenHouse2024
         public void Player_Update(GameTime gameTime)
         {
             Player_Texture.UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
-            hitbox = new Rectangle((int)position.X, (int)position.Y, 16, 32);
+            hitbox = new Rectangle((int)position.X, (int)position.Y, 32, 64);
 
 
 
             //test player
             if (Game1.walltest.Intersects(hitbox))
             {
+                
                 allow_walking = false;
                 switch (Direction)
                 {
                     case "Left":
                         position.X += (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                        Player_Texture.startrow = 3;
                         break;
                     case "Right":
                         position.X -= (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                        Player_Texture.startrow = 2;
                         break;
                     case "Up":
                         position.Y += (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                        Player_Texture.startrow = 4;
                         break;
                     case "Down":
                         position.Y -= (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                        Player_Texture.startrow = 1;
                         break;
                     default:
                         break;
@@ -69,17 +74,22 @@ namespace DigitalGame_OpenHouse2024
                     {
                         case "Left":
                             position.X -= (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                            Player_Texture.startrow = 6;
                             break;
                         case "Right":
                             position.X += (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                            Player_Texture.startrow = 7;
                             break;
                         case "Up":
                             position.Y -= (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                            Player_Texture.startrow = 8;
                             break;
                         case "Down":
                             position.Y += (float)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+                            Player_Texture.startrow = 5;
                             break;
                         default:
+                            Player_Texture.startrow = 1;
                             break;
                     }
                 }

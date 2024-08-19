@@ -10,7 +10,7 @@ namespace DigitalGame_OpenHouse2024
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D whiteblock_test, darkmap, codeforblock;
+        private Texture2D whiteblock_test, darkmap, codeforblock, charactert, Map2;
         private SpriteFont pixelfont;
         static public MouseState mouse_state, old_mouse_state;
         static public KeyboardState key_state, old_key_state;
@@ -59,12 +59,13 @@ namespace DigitalGame_OpenHouse2024
 
         protected override void LoadContent()
         {
-            
+            Map2 = Content.Load<Texture2D>("Room");
             whiteblock_test = Content.Load<Texture2D>("whiteblock");
             codeforblock = Content.Load<Texture2D>("whiteblock");
             darkmap = Content.Load<Texture2D>("ingre/dark");
             pixelfont = Content.Load<SpriteFont>("font/Pixelfont");
-            player_character = new Player(whiteblock_test, 1, 1, 1, pixelfont);
+            charactert = Content.Load<Texture2D>("character_upscale");
+            player_character = new Player(charactert, 6, 8, 5, pixelfont);
             blocks.Add(new CodeBlock("Left", new Vector2(0, 450), codeforblock));
             blocks.Add(new CodeBlock("Down", new Vector2(0,600), codeforblock));
             rooms.Add(new Room(new Vector2(600, 600), darkmap));
@@ -255,6 +256,9 @@ namespace DigitalGame_OpenHouse2024
 
         protected void Draw_Gameplay(GameTime gameTime)
         {
+            //Map2
+            _spriteBatch.Draw(Map2,Vector2.Zero,Color.White);
+
             player_character.Player_draw(_spriteBatch);
             foreach(Room miniroom in rooms)
             {
