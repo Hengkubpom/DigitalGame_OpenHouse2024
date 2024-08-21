@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -99,6 +100,9 @@ namespace DigitalGame_OpenHouse2024
                 if(Room.DirectionInThisRoom.Count > 0)
                 {
                     Room.DirectionInThisRoom.RemoveAt(0);
+                    var instance = Game1.sEffect[1].CreateInstance();
+                    instance.Volume = 0.2f;
+                    instance.Play();
                 }
                 allow_walking = true;
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -22,6 +23,7 @@ namespace DigitalGame_OpenHouse2024
         private Player player_character;
         private List<CodeBlock> blocks = new List<CodeBlock>();
         private List<Room> rooms = new List<Room>();
+        static public List<SoundEffect> sEffect = new List<SoundEffect>();
         enum ScreenState
         {
             MainMenu,
@@ -69,6 +71,9 @@ namespace DigitalGame_OpenHouse2024
             logo = Content.Load<Texture2D>("menu/logo");
             start1 = Content.Load<Texture2D>("menu/startbutton");
             start2 = Content.Load<Texture2D>("menu/startbutton_2");
+            sEffect.Add(Content.Load<SoundEffect>("Sound/change_state"));
+            sEffect.Add(Content.Load<SoundEffect>("Sound/ButtonClick"));
+            sEffect.Add(Content.Load<SoundEffect>("Sound/CodeFill"));
             player_character = new Player(charactert, 6, 8, 5, pixelfont);
             blocks.Add(new CodeBlock("Left", new Vector2(0, 450), codeforblock));
             blocks.Add(new CodeBlock("Down", new Vector2(0,600), codeforblock));
@@ -141,6 +146,9 @@ namespace DigitalGame_OpenHouse2024
                 {
                     if (mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
                     {
+                        var instance = sEffect[1].CreateInstance();
+                        instance.Volume = 0.5f;
+                        instance.Play();
                         name_popup = true;
                     }
                 }
@@ -160,6 +168,9 @@ namespace DigitalGame_OpenHouse2024
                 if(key_state.IsKeyDown(Keys.Enter) && old_key_state.IsKeyUp(Keys.Enter) || EnterButton.Contains(mouse_state.X,mouse_state.Y) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
                 {
                     player_character.name = player_name;
+                    var instance = sEffect[1].CreateInstance();
+                    instance.Volume = 0.5f;
+                    instance.Play();
                     OnScreen = ScreenState.Gameplay;
                 }
                 
@@ -239,6 +250,9 @@ namespace DigitalGame_OpenHouse2024
                         {
                             if (miniroom.IsEmpty)
                             {
+                                var instance = sEffect[2].CreateInstance();
+                                instance.Volume = 0.2f;
+                                instance.Play();
                                 miniroom.fill_code(minicode);
                                 break;
                             }
