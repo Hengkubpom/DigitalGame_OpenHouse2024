@@ -82,12 +82,28 @@ namespace DigitalGame_OpenHouse2024
             sEffect.Add(Content.Load<SoundEffect>("Sound/ButtonClick"));
             sEffect.Add(Content.Load<SoundEffect>("Sound/CodeFill"));
             player_character = new Player(charactert, 6, 8, 5, pixelfont, Map2, 1);
-            blocks.Add(new CodeBlock("Left", new Vector2(0, 450), codeforblock));
-            blocks.Add(new CodeBlock("Down", new Vector2(0,600), codeforblock));
-            blocks.Add(new CodeBlock("Up", new Vector2(1000, 450), codeforblock));
-            blocks.Add(new CodeBlock("Right", new Vector2(1000, 600), codeforblock));
-            rooms.Add(new Room(new Vector2(600, 600), darkmap));
-            rooms.Add(new Room(new Vector2(600, 750), darkmap));
+            blocks.Add(new CodeBlock("Left", new Vector2(945, 595), codeforblock));
+            blocks.Add(new CodeBlock("Down", new Vector2(945,685), codeforblock));
+            blocks.Add(new CodeBlock("Up", new Vector2(1200, 595), codeforblock));
+            blocks.Add(new CodeBlock("Right", new Vector2(1200, 685), codeforblock));
+            rooms.Add(new Room(new Vector2(890, 190), darkmap));
+            rooms.Add(new Room(new Vector2(1075, 190), darkmap));
+            rooms.Add(new Room(new Vector2(1260, 190), darkmap));
+            rooms.Add(new Room(new Vector2(890, 250), darkmap));
+            rooms.Add(new Room(new Vector2(1075, 250), darkmap));
+            rooms.Add(new Room(new Vector2(1260, 250), darkmap));
+            rooms.Add(new Room(new Vector2(890, 310), darkmap));
+            rooms.Add(new Room(new Vector2(1075, 310), darkmap));
+            rooms.Add(new Room(new Vector2(1260, 310), darkmap));
+            rooms.Add(new Room(new Vector2(890, 370), darkmap));
+            rooms.Add(new Room(new Vector2(1075, 370), darkmap));
+            rooms.Add(new Room(new Vector2(1260, 370), darkmap));
+            rooms.Add(new Room(new Vector2(890, 430), darkmap));
+            rooms.Add(new Room(new Vector2(1075, 430), darkmap));
+            rooms.Add(new Room(new Vector2(1260, 430), darkmap));
+            rooms.Add(new Room(new Vector2(890, 490), darkmap));
+            rooms.Add(new Room(new Vector2(1075, 490), darkmap));
+            rooms.Add(new Room(new Vector2(1260, 490), darkmap));
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -220,8 +236,8 @@ namespace DigitalGame_OpenHouse2024
         ////////////// Gameplay ////////////////
         ////////////// Gameplay ////////////////
 
-        private Rectangle apartment = new Rectangle(600, 600, 300, 250);
-        private Rectangle Restart = new Rectangle(0, 0, 50, 50);
+        private Rectangle apartment = new Rectangle(860, 160, 600, 400);
+        private Rectangle Restart = new Rectangle(710, 20, 45, 40);
         protected void Update_Gameplay(GameTime gameTime)
         {
             Console.WriteLine(player_character.IsWin);
@@ -350,11 +366,11 @@ namespace DigitalGame_OpenHouse2024
                 minicode.Code_draw(_spriteBatch);
             }
 
-            _spriteBatch.Draw(darkmap, apartment, Color.White);
+            //_spriteBatch.Draw(darkmap, apartment, Color.White);
 
 
 
-            _spriteBatch.Draw(whiteblock_test, Restart, Color.Red);
+            //_spriteBatch.Draw(whiteblock_test, Restart, Color.Red);
         }
 
     }

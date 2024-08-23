@@ -16,7 +16,7 @@ namespace DigitalGame_OpenHouse2024
         public Room(Vector2 position, Texture2D texture)
         {
             this.position = position;
-            hitbox = new Rectangle((int)position.X, (int)position.Y, 300, 100);
+            hitbox = new Rectangle((int)position.X, (int)position.Y, 175, 45);
             first_texture = texture;
             this.texture = first_texture;
         }
@@ -35,7 +35,10 @@ namespace DigitalGame_OpenHouse2024
 
         public void Draw_room(SpriteBatch _batch)
         {
-            _batch.Draw(texture, hitbox, Color.White);
+            if (!IsEmpty)
+            {
+                _batch.Draw(texture, hitbox, Color.White);
+            }
         }
 
         

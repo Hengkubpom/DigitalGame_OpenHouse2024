@@ -19,12 +19,12 @@ namespace DigitalGame_OpenHouse2024
             this.origin = position;
             this.position = origin;
             this.texture = texture;
-            hitbox = new Rectangle((int)position.X, (int)position.Y, 300, 100);
+            hitbox = new Rectangle((int)position.X, (int)position.Y, 175, 45);
         }
 
         public void Code_Update(GameTime gameTime)
         {
-            hitbox = new Rectangle((int)position.X, (int)position.Y, 300, 100);
+            hitbox = new Rectangle((int)position.X, (int)position.Y, 175, 45);
             if (follow_ms)
             {
                 position = new Vector2(Game1.mouse_state.X, Game1.mouse_state.Y);
@@ -37,7 +37,7 @@ namespace DigitalGame_OpenHouse2024
 
         public void Code_draw(SpriteBatch _batch)
         {
-            _batch.Draw(texture, hitbox, Color.Green);
+            _batch.Draw(texture, hitbox, Color.White);
         }
         public string GetDirection() { return this.direction;}
     }
