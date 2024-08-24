@@ -14,7 +14,7 @@ namespace DigitalGame_OpenHouse2024
         public Texture2D texture, first_texture;
         public Rectangle hitbox;
         private SpriteFont font;
-        private string direction;
+        public string direction;
         public Room(Vector2 position, Texture2D texture, SpriteFont font)
         {
             this.position = position;

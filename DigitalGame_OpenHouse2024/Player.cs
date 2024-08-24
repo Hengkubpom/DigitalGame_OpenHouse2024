@@ -49,8 +49,9 @@ namespace DigitalGame_OpenHouse2024
         }
         public void ChangeLevel(int level)
         {
-            this.level = level;
 
+
+            this.level = level;
             IsWin = false;
             switch (level)
             {
@@ -95,6 +96,9 @@ namespace DigitalGame_OpenHouse2024
             if (victory.Intersects(hitbox))
             {
                 IsWin = true;
+                var instance = Game1.sEffect[3].CreateInstance();
+                instance.Volume = 0.5f;
+                instance.Play();
             }
 
             if (!IsWin)

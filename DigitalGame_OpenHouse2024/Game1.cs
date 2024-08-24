@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
@@ -26,6 +27,7 @@ namespace DigitalGame_OpenHouse2024
         private List<CodeBlock> blocks = new List<CodeBlock>();
         private List<Room> rooms = new List<Room>();
         static public List<SoundEffect> sEffect = new List<SoundEffect>();
+        private Song onLobby, onEnd;
         enum ScreenState
         {
             MainMenu,
@@ -63,6 +65,8 @@ namespace DigitalGame_OpenHouse2024
 
         protected override void LoadContent()
         {
+            onLobby = Content.Load<Song>("Sound/Onlobby");
+            onEnd = Content.Load<Song>("Sound/OnEnd");
             Map2 = Content.Load<Texture2D>("Room");
             whiteblock_test = Content.Load<Texture2D>("whiteblock");
             codeforblock = Content.Load<Texture2D>("codeblock");
@@ -82,6 +86,7 @@ namespace DigitalGame_OpenHouse2024
             sEffect.Add(Content.Load<SoundEffect>("Sound/change_state"));
             sEffect.Add(Content.Load<SoundEffect>("Sound/ButtonClick"));
             sEffect.Add(Content.Load<SoundEffect>("Sound/CodeFill"));
+            sEffect.Add(Content.Load<SoundEffect>("Sound/Correct"));
             player_character = new Player(charactert, 6, 8, 5, pixelfont, Map2, 1);
             blocks.Add(new CodeBlock("Left", new Vector2(945, 595), codeforblock, CodeFont));
             blocks.Add(new CodeBlock("Down", new Vector2(945, 685), codeforblock, CodeFont));
@@ -107,6 +112,8 @@ namespace DigitalGame_OpenHouse2024
             rooms.Add(new Room(new Vector2(1260, 490), darkmap, CodeFont));
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            MediaPlayer.Play(onLobby);
+            MediaPlayer.IsRepeating = true;
 
             // TODO: use this.Content to load your game content here
         }
@@ -197,6 +204,7 @@ namespace DigitalGame_OpenHouse2024
                     var instance = sEffect[1].CreateInstance();
                     instance.Volume = 0.5f;
                     instance.Play();
+                    MediaPlayer.Stop();
                     OnScreen = ScreenState.Gameplay;
                 }
 
@@ -240,9 +248,10 @@ namespace DigitalGame_OpenHouse2024
         private Rectangle apartment = new Rectangle(860, 160, 600, 400);
         private Rectangle Restart = new Rectangle(710, 20, 45, 40);
         private Rectangle Restart_end = new Rectangle(970, 513, 35, 35);
+        private bool allow_song_gameover = true;
         protected void Update_Gameplay(GameTime gameTime)
         {
-            Console.WriteLine(player_character.IsWin);
+            
             if (!player_character.IsWin && !IsEndGame)
             {
                 if (!IsTutorial)
@@ -283,15 +292,18 @@ namespace DigitalGame_OpenHouse2024
                                     miniroom.fill_code(minicode);
                                     break;
                                 }
-                                count_room++;
+                                else
+                                {
+                                    count_room++;
+                                }
                             }
                             if (count_room == rooms.Count)
                             {
                                 for (int i = 0; i < count_room; i++)
                                 {
-                                    if (i + 1 < count_room - 1)
+                                    if (i + 1 < count_room)
                                     {
-                                        rooms[i] = rooms[i + 1];
+                                        rooms[i].direction = rooms[i + 1].direction;
                                     }
                                     else
                                     {
@@ -343,6 +355,12 @@ namespace DigitalGame_OpenHouse2024
                 }
                 else if (player_character.level == 2)
                 {
+                    if (allow_song_gameover)
+                    {
+                        MediaPlayer.Play(onEnd);
+                        MediaPlayer.IsRepeating = false;
+                        allow_song_gameover = false;
+                    }
                     IsEndGame = true;
                     if (Restart_end.Contains(mouse_state.Position.ToVector2()) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
                     {
@@ -397,6 +415,7 @@ namespace DigitalGame_OpenHouse2024
 
         protected void RestartEverything()
         {
+            allow_song_gameover = true;
             OnScreen = ScreenState.MainMenu;
             player_name = "";
             Time = 0;
@@ -412,6 +431,10 @@ namespace DigitalGame_OpenHouse2024
 
             }
             IsEndGame = false;
+
+            MediaPlayer.Play(onLobby);
+            MediaPlayer.IsRepeating = true;
+            name_popup = false;
         }
     }
 }
