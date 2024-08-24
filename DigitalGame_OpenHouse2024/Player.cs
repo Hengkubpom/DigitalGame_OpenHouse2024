@@ -15,7 +15,7 @@ namespace DigitalGame_OpenHouse2024
         private string Direction = "";
         private SpriteFont font;
         public bool allow_walking = false;
-        private Vector2 origin = new Vector2(300,400);
+        private Vector2 origin = new Vector2(400,450);
         //private Vector2 origin = new Vector2(300, 200);
         public Vector2 position, MapPosition;
         public Rectangle hitbox, walltest, victory;
@@ -56,6 +56,7 @@ namespace DigitalGame_OpenHouse2024
             {
                 case 1:
                     MapPosition = new Vector2(position.X, position.Y);
+                    victory = new Rectangle((int)MapPosition.X + 345, (int)MapPosition.Y + 95, 100, 100);
                     break;
                 case 2:
                     MapPosition = new Vector2(position.X - 5, position.Y - 140);

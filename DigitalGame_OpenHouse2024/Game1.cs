@@ -11,13 +11,13 @@ namespace DigitalGame_OpenHouse2024
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D darkmap, codeforblock, charactert, Map2, bg_main, logo, start1,start2, inputname;
+        private Texture2D darkmap, codeforblock, charactert, Map2, bg_main, logo, start1, start2, inputname;
         static public Texture2D whiteblock_test;
         private Texture2D level1, level2, studentcard;
-        private SpriteFont pixelfont, Bigpixel;
+        private SpriteFont pixelfont, Bigpixel, CodeFont;
         static public MouseState mouse_state, old_mouse_state;
         static public KeyboardState key_state, old_key_state;
-        private bool IsTutorial = true;
+        private bool IsTutorial = true, IsEndGame = false;
         private float Time = 0;
         private int minute, second;
         private char character;
@@ -48,7 +48,7 @@ namespace DigitalGame_OpenHouse2024
             Window.TextInput += TextInputHandler;
             base.Initialize();
         }
-        
+
 
 
         private void TextInputHandler(object sender, TextInputEventArgs args)
@@ -69,6 +69,7 @@ namespace DigitalGame_OpenHouse2024
             darkmap = Content.Load<Texture2D>("ingre/dark");
             pixelfont = Content.Load<SpriteFont>("font/Pixelfont");
             Bigpixel = Content.Load<SpriteFont>("font/BigPixel");
+            CodeFont = Content.Load<SpriteFont>("font/CodeBlock");
             charactert = Content.Load<Texture2D>("character_upscale");
             bg_main = Content.Load<Texture2D>("menu/bg_main");
             logo = Content.Load<Texture2D>("menu/logo");
@@ -82,28 +83,28 @@ namespace DigitalGame_OpenHouse2024
             sEffect.Add(Content.Load<SoundEffect>("Sound/ButtonClick"));
             sEffect.Add(Content.Load<SoundEffect>("Sound/CodeFill"));
             player_character = new Player(charactert, 6, 8, 5, pixelfont, Map2, 1);
-            blocks.Add(new CodeBlock("Left", new Vector2(945, 595), codeforblock));
-            blocks.Add(new CodeBlock("Down", new Vector2(945,685), codeforblock));
-            blocks.Add(new CodeBlock("Up", new Vector2(1200, 595), codeforblock));
-            blocks.Add(new CodeBlock("Right", new Vector2(1200, 685), codeforblock));
-            rooms.Add(new Room(new Vector2(890, 190), darkmap));
-            rooms.Add(new Room(new Vector2(1075, 190), darkmap));
-            rooms.Add(new Room(new Vector2(1260, 190), darkmap));
-            rooms.Add(new Room(new Vector2(890, 250), darkmap));
-            rooms.Add(new Room(new Vector2(1075, 250), darkmap));
-            rooms.Add(new Room(new Vector2(1260, 250), darkmap));
-            rooms.Add(new Room(new Vector2(890, 310), darkmap));
-            rooms.Add(new Room(new Vector2(1075, 310), darkmap));
-            rooms.Add(new Room(new Vector2(1260, 310), darkmap));
-            rooms.Add(new Room(new Vector2(890, 370), darkmap));
-            rooms.Add(new Room(new Vector2(1075, 370), darkmap));
-            rooms.Add(new Room(new Vector2(1260, 370), darkmap));
-            rooms.Add(new Room(new Vector2(890, 430), darkmap));
-            rooms.Add(new Room(new Vector2(1075, 430), darkmap));
-            rooms.Add(new Room(new Vector2(1260, 430), darkmap));
-            rooms.Add(new Room(new Vector2(890, 490), darkmap));
-            rooms.Add(new Room(new Vector2(1075, 490), darkmap));
-            rooms.Add(new Room(new Vector2(1260, 490), darkmap));
+            blocks.Add(new CodeBlock("Left", new Vector2(945, 595), codeforblock, CodeFont));
+            blocks.Add(new CodeBlock("Down", new Vector2(945, 685), codeforblock, CodeFont));
+            blocks.Add(new CodeBlock("Up", new Vector2(1200, 595), codeforblock, CodeFont));
+            blocks.Add(new CodeBlock("Right", new Vector2(1200, 685), codeforblock, CodeFont));
+            rooms.Add(new Room(new Vector2(890, 190), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1075, 190), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1260, 190), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(890, 250), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1075, 250), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1260, 250), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(890, 310), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1075, 310), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1260, 310), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(890, 370), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1075, 370), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1260, 370), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(890, 430), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1075, 430), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1260, 430), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(890, 490), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1075, 490), darkmap, CodeFont));
+            rooms.Add(new Room(new Vector2(1260, 490), darkmap, CodeFont));
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -123,8 +124,8 @@ namespace DigitalGame_OpenHouse2024
             }
             old_mouse_state = mouse_state;
             old_key_state = key_state;
-            
-            
+
+
 
             base.Update(gameTime);
         }
@@ -163,8 +164,8 @@ namespace DigitalGame_OpenHouse2024
         bool name_popup = false;
         protected void Update_Mainmenu(GameTime gameTIme)
         {
-            
-            
+
+
             if (!name_popup)
             {
                 if (StartButton.Contains(mouse_state.X, mouse_state.Y))
@@ -180,7 +181,7 @@ namespace DigitalGame_OpenHouse2024
             }
             else
             {
-                if(key_state.IsKeyDown(Keys.Escape) && old_key_state.IsKeyUp(Keys.Escape))
+                if (key_state.IsKeyDown(Keys.Escape) && old_key_state.IsKeyUp(Keys.Escape))
                 {
                     player_name = "";
                     name_popup = false;
@@ -188,9 +189,9 @@ namespace DigitalGame_OpenHouse2024
                 Console.WriteLine(player_name.Length.ToString());
                 if (key_state.IsKeyDown(Keys.Back) && old_key_state.IsKeyUp(Keys.Back) && player_name.Length > 0)
                 {
-                    player_name = player_name.Substring(0,player_name.Length-1);
+                    player_name = player_name.Substring(0, player_name.Length - 1);
                 }
-                if(key_state.IsKeyDown(Keys.Enter) && old_key_state.IsKeyUp(Keys.Enter) || EnterButton.Contains(mouse_state.X,mouse_state.Y) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
+                if (key_state.IsKeyDown(Keys.Enter) && old_key_state.IsKeyUp(Keys.Enter) || EnterButton.Contains(mouse_state.X, mouse_state.Y) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
                 {
                     player_character.name = player_name;
                     var instance = sEffect[1].CreateInstance();
@@ -198,15 +199,15 @@ namespace DigitalGame_OpenHouse2024
                     instance.Play();
                     OnScreen = ScreenState.Gameplay;
                 }
-                
+
             }
         }
 
         protected void Draw_Mainmenu(GameTime gameTime)
         {
-            _spriteBatch.Draw(bg_main, Vector2.Zero,Color.White);
-            _spriteBatch.Draw(logo, new Vector2(180,150), Color.White);
-            if (StartButton.Contains(mouse_state.X,mouse_state.Y))
+            _spriteBatch.Draw(bg_main, Vector2.Zero, Color.White);
+            _spriteBatch.Draw(logo, new Vector2(180, 150), Color.White);
+            if (StartButton.Contains(mouse_state.X, mouse_state.Y))
             {
                 _spriteBatch.Draw(start2, StartButton, Color.White);
             }
@@ -214,15 +215,15 @@ namespace DigitalGame_OpenHouse2024
             {
                 _spriteBatch.Draw(start1, StartButton, Color.White);
             }
-            if(name_popup)
+            if (name_popup)
             {
                 _spriteBatch.Draw(darkmap, new Rectangle(0, 0, 1600, 900), Color.White);
                 _spriteBatch.Draw(inputname, Vector2.Zero, Color.White);
                 if (player_name.Length > 0)
                 {
-                    _spriteBatch.DrawString(pixelfont, player_name, new Vector2(1225,275), Color.Black);
+                    _spriteBatch.DrawString(pixelfont, player_name, new Vector2(1225, 275), Color.Black);
                 }
-                
+
             }
         }
 
@@ -238,10 +239,11 @@ namespace DigitalGame_OpenHouse2024
 
         private Rectangle apartment = new Rectangle(860, 160, 600, 400);
         private Rectangle Restart = new Rectangle(710, 20, 45, 40);
+        private Rectangle Restart_end = new Rectangle(970, 513, 35, 35);
         protected void Update_Gameplay(GameTime gameTime)
         {
             Console.WriteLine(player_character.IsWin);
-            if (!player_character.IsWin)
+            if (!player_character.IsWin && !IsEndGame)
             {
                 if (!IsTutorial)
                 {
@@ -324,19 +326,28 @@ namespace DigitalGame_OpenHouse2024
             }
             else
             {
-                if(player_character.level == 1)
+                if (player_character.level == 1)
                 {
-                    if(key_state.IsKeyDown(Keys.Enter))
+                    if (key_state.IsKeyDown(Keys.Enter))
                     {
                         player_character.Reset();
                         player_character.ChangeLevel(2);
                         player_character.Reset();
                         IsTutorial = false;
+                        foreach (Room miniroom in rooms)
+                        {
+                            miniroom.Restart();
+
+                        }
                     }
                 }
-                else if(player_character.level == 2)
+                else if (player_character.level == 2)
                 {
-                    //student card
+                    IsEndGame = true;
+                    if (Restart_end.Contains(mouse_state.Position.ToVector2()) && mouse_state.LeftButton == ButtonState.Pressed && old_mouse_state.LeftButton == ButtonState.Released)
+                    {
+                        RestartEverything();
+                    }
                 }
             }
         }
@@ -355,13 +366,13 @@ namespace DigitalGame_OpenHouse2024
                 _spriteBatch.Draw(level2, Vector2.Zero, Color.White);
             }
 
-            _spriteBatch.DrawString(Bigpixel, player_name, new Vector2(300, 130), Color.Black);
-            _spriteBatch.DrawString(Bigpixel, minute +"M "+ second +"S", new Vector2(1350, 130), Color.Black);
+            _spriteBatch.DrawString(Bigpixel, player_name, new Vector2(300, 128), Color.DarkCyan);
+            _spriteBatch.DrawString(Bigpixel, minute + "M " + second + "S", new Vector2(1300, 130), Color.DarkCyan);
             foreach (Room miniroom in rooms)
             {
                 miniroom.Draw_room(_spriteBatch);
             }
-            foreach(CodeBlock minicode in blocks)
+            foreach (CodeBlock minicode in blocks)
             {
                 minicode.Code_draw(_spriteBatch);
             }
@@ -370,8 +381,37 @@ namespace DigitalGame_OpenHouse2024
 
 
 
-            //_spriteBatch.Draw(whiteblock_test, Restart, Color.Red);
+
+            if (IsEndGame)
+            {
+                _spriteBatch.Draw(darkmap, new Rectangle(0, 0, 1600, 900), Color.White);
+                _spriteBatch.Draw(studentcard, new Vector2(570, 300), Color.White);
+                _spriteBatch.DrawString(Bigpixel, player_name, new Vector2(857, 402), Color.DarkCyan);
+                _spriteBatch.DrawString(Bigpixel, minute + "M " + second + "S", new Vector2(857, 460), Color.DarkCyan);
+            }
+
+            //_spriteBatch.Draw(whiteblock_test, Restart_end, Color.Red);
         }
 
+
+
+        protected void RestartEverything()
+        {
+            OnScreen = ScreenState.MainMenu;
+            player_name = "";
+            Time = 0;
+            minute = 0;
+            second = 0;
+            player_character.Reset();
+            player_character.ChangeLevel(1);
+            player_character.Reset();
+            IsTutorial = true;
+            foreach (Room miniroom in rooms)
+            {
+                miniroom.Restart();
+
+            }
+            IsEndGame = false;
+        }
     }
 }

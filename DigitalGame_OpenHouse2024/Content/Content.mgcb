@@ -44,6 +44,13 @@
 /processorParam:TextureFormat=Compressed
 /build:font/BigPixel.spritefont
 
+#begin font/CodeBlock.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font/CodeBlock.spritefont
+
 #begin font/Pixelfont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
