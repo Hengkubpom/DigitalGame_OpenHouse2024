@@ -408,6 +408,10 @@ namespace DigitalGame_OpenHouse2024
                 _spriteBatch.DrawString(Bigpixel, minute + "M " + second + "S", new Vector2(857, 460), Color.DarkCyan);
             }
 
+            if (player_character.IsWin && player_character.level == 1)
+            {
+                _spriteBatch.DrawString(Bigpixel, "Press Enter to Continue", new Vector2(280, 700), Color.DarkCyan);
+            }
             //_spriteBatch.Draw(whiteblock_test, Restart_end, Color.Red);
         }
 
